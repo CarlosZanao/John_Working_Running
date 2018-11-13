@@ -17,11 +17,10 @@ namespace JOHN_WORKING_RUNNING
     /// </summary>
     public class John : Microsoft.Xna.Framework.GameComponent
     {
-        public John(Game game) 
+        public John(Game game)
             : base(game)
         {
             // TODO: Construct any child components here
-            
         }
 
         /// <summary>

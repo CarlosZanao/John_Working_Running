@@ -16,8 +16,11 @@ namespace JOHN_WORKING_RUNNING
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        private const string AssetName = "JohnSprite";
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D Jonh;
+        int x, y;
 
         public Game1()
         {
@@ -34,7 +37,7 @@ namespace JOHN_WORKING_RUNNING
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            x = 50; y = 250;
             base.Initialize();
         }
 
@@ -46,7 +49,7 @@ namespace JOHN_WORKING_RUNNING
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            Jonh = Content.Load<Texture2D>(AssetName);
             // TODO: use this.Content to load your game content here
         }
 
@@ -66,9 +69,13 @@ namespace JOHN_WORKING_RUNNING
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
+            if (y < 250) y += 4;
+            if (Keyboard.GetState().IsKeyDown(Keys.Up)) y-=10;
+            if (Keyboard.GetState().IsKeyDown(Keys.Right)) x+=2;
+            if (Keyboard.GetState().IsKeyDown(Keys.Left)) x-=2;
 
             // TODO: Add your update logic here
 
@@ -82,10 +89,14 @@ namespace JOHN_WORKING_RUNNING
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
-            base.Draw(gameTime);
+            spriteBatch.Begin();
+            spriteBatch.Draw(
+            Jonh,
+            new Rectangle(x, y, Jonh.Width, Jonh.Height),
+            Color.White
+            );
+            spriteBatch.End();
+            base.Draw(gameTime);
         }
     }
 }
