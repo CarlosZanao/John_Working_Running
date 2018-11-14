@@ -15,12 +15,26 @@ namespace JOHN_WORKING_RUNNING
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class John : Microsoft.Xna.Framework.GameComponent
+    public class John : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        public enum Direcoes { Cima, Baixo, Direita, Esquerda }
+        public enum Estados { Idle, Andando }
+        SpriteBatch spriteBatch;
+        Texture2D Jonh;
+        Direcoes direcao;
+        public Point Posicao { get; set; }
+
+
         public John(Game game)
             : base(game)
         {
             // TODO: Construct any child components here
+            Posicao = new Point(150, 50);
+        }
+        public John(Game game, Point argposicao)
+            : base(game)
+        {
+            Posicao = argposicao;
         }
 
         /// <summary>
@@ -30,8 +44,14 @@ namespace JOHN_WORKING_RUNNING
         public override void Initialize()
         {
             // TODO: Add your initialization code here
-
+            
             base.Initialize();
+        }
+        public void LoadContent(Game game)
+        {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            Jonh = game.Content.Load<Texture2D>("JohnSprite");
+            
         }
 
         /// <summary>
@@ -43,6 +63,31 @@ namespace JOHN_WORKING_RUNNING
             // TODO: Add your update code here
 
             base.Update(gameTime);
+
         }
+        public override void Draw(GameTime gameTime)
+        {
+            spriteBatch.Begin();
+            spriteBatch.Draw(
+            Jonh,
+            new Rectangle(Posicao.X, Posicao.Y, Jonh.Width, Jonh.Height),
+            Color.White
+            );
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
+        public void Mover(Direcoes argdirecao)
+        {
+            direcao = argdirecao;
+            switch (argdirecao)
+            {
+                case Direcoes.Cima: Posicao = new Point(Posicao.X, Posicao.Y - 10); break;
+                case Direcoes.Baixo: Posicao = new Point(Posicao.X, Posicao.Y + 10); break;
+                case Direcoes.Esquerda: Posicao = new Point(Posicao.X - 2, Posicao.Y); break;
+                case Direcoes.Direita: Posicao = new Point(Posicao.X + 2, Posicao.Y); break;
+            }
+        }
+        
+
     }
 }

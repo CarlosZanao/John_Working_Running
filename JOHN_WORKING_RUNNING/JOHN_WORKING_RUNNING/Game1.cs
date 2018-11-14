@@ -19,11 +19,12 @@ namespace JOHN_WORKING_RUNNING
         private const string AssetName = "JohnSprite";
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D Jonh;
+        John Jonh;
         int x, y;
 
         public Game1()
         {
+            Jonh = new John(this);
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -37,6 +38,7 @@ namespace JOHN_WORKING_RUNNING
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Jonh.Initialize();
             x = 50; y = 250;
             base.Initialize();
         }
@@ -49,7 +51,8 @@ namespace JOHN_WORKING_RUNNING
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Jonh = Content.Load<Texture2D>(AssetName);
+
+            Jonh.LoadContent(this);
             // TODO: use this.Content to load your game content here
         }
 
@@ -72,10 +75,14 @@ namespace JOHN_WORKING_RUNNING
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
-            if (y < 250) y += 4;
-            if (Keyboard.GetState().IsKeyDown(Keys.Up)) y-=10;
-            if (Keyboard.GetState().IsKeyDown(Keys.Right)) x+=2;
-            if (Keyboard.GetState().IsKeyDown(Keys.Left)) x-=2;
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                Jonh.Mover(John.Direcoes.Cima);
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                Jonh.Mover(John.Direcoes.Baixo);
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                Jonh.Mover(John.Direcoes.Direita);
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                Jonh.Mover(John.Direcoes.Esquerda);
 
             // TODO: Add your update logic here
 
@@ -89,13 +96,7 @@ namespace JOHN_WORKING_RUNNING
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
-            spriteBatch.Draw(
-            Jonh,
-            new Rectangle(x, y, Jonh.Width, Jonh.Height),
-            Color.White
-            );
-            spriteBatch.End();
+            Jonh.Draw(gameTime);
             base.Draw(gameTime);
         }
     }
