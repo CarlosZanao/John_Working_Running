@@ -20,13 +20,18 @@ namespace JOHN_WORKING_RUNNING
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         John Jonh;
+        Terreno terreno1;
         int x, y;
 
         public Game1()
         {
-            Jonh = new John(this);
             graphics = new GraphicsDeviceManager(this);
+            Jonh = new John(this);
+            terreno1 = new Terreno(this);
             Content.RootDirectory = "Content";
+
+            
+            
         }
 
         /// <summary>
@@ -39,7 +44,7 @@ namespace JOHN_WORKING_RUNNING
         {
             // TODO: Add your initialization logic here
             Jonh.Initialize();
-            x = 50; y = 250;
+            terreno1.Initialize();
             base.Initialize();
         }
 
@@ -53,6 +58,10 @@ namespace JOHN_WORKING_RUNNING
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Jonh.LoadContent(this);
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            terreno1.LoadContent(this);
             // TODO: use this.Content to load your game content here
         }
 
@@ -79,13 +88,15 @@ namespace JOHN_WORKING_RUNNING
                 Jonh.Mover(John.Direcoes.Cima);
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 Jonh.Mover(John.Direcoes.Baixo);
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                Jonh.Mover(John.Direcoes.Direita);
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                Jonh.Mover(John.Direcoes.Esquerda);
+           /* if (Keyboard.GetState().IsKeyDown(Keys.Left))*/
+                terreno1.Mover(Terreno.Direcoes.Esquerda);
 
             // TODO: Add your update logic here
-
+            if (terreno1.Posicao.X <= -(terreno1.terreno.Width + 62))
+            {
+                terreno1.Posicao = new Point(0, 350);
+            }
+           
             base.Update(gameTime);
         }
 
@@ -97,6 +108,7 @@ namespace JOHN_WORKING_RUNNING
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             Jonh.Draw(gameTime);
+            terreno1.Draw(gameTime);
             base.Draw(gameTime);
         }
     }

@@ -17,7 +17,7 @@ namespace JOHN_WORKING_RUNNING
     /// </summary>
     public class John : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        public enum Direcoes { Cima, Baixo, Direita, Esquerda }
+        public enum Direcoes { Cima, Baixo }
         public enum Estados { Idle, Andando }
         SpriteBatch spriteBatch;
         Texture2D Jonh;
@@ -70,7 +70,7 @@ namespace JOHN_WORKING_RUNNING
             spriteBatch.Begin();
             spriteBatch.Draw(
             Jonh,
-            new Rectangle(Posicao.X, Posicao.Y, Jonh.Width, Jonh.Height),
+            new Rectangle(100, Posicao.Y, Jonh.Width, Jonh.Height),
             Color.White
             );
             spriteBatch.End();
@@ -83,8 +83,7 @@ namespace JOHN_WORKING_RUNNING
             {
                 case Direcoes.Cima: Posicao = new Point(Posicao.X, Posicao.Y - 10); break;
                 case Direcoes.Baixo: Posicao = new Point(Posicao.X, Posicao.Y + 10); break;
-                case Direcoes.Esquerda: Posicao = new Point(Posicao.X - 2, Posicao.Y); break;
-                case Direcoes.Direita: Posicao = new Point(Posicao.X + 2, Posicao.Y); break;
+                
             }
         }
         

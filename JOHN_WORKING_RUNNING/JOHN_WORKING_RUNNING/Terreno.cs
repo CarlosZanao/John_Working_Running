@@ -15,14 +15,29 @@ namespace JOHN_WORKING_RUNNING
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class Terreno : Microsoft.Xna.Framework.GameComponent
+    public class Terreno : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        Texture2D Terreno1;
+        public enum Direcoes {Direita, Esquerda }
+        public enum Estados { Idle, Andando }
+
+        private const string AssetName = "Terreno";
+        SpriteBatch spriteBatch;
+        public Texture2D terreno;
+        Direcoes direcao;
+        public int somaPos;
+        public Point Posicao { get; set; }
+        //Texture2D Terreno1;
+
         public Terreno(Game game)
             : base(game)
         {
             // TODO: Construct any child components here
-
+            Posicao = new Point(0, 0);
+        }
+        public Terreno(Game game, Point argposicao)
+           : base(game)
+        {
+            Posicao = argposicao;
         }
 
         /// <summary>
@@ -34,6 +49,14 @@ namespace JOHN_WORKING_RUNNING
             // TODO: Add your initialization code here
 
             base.Initialize();
+            somaPos = 1;
+        }
+
+        public void LoadContent(Game game)
+        {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            terreno = game.Content.Load<Texture2D>(AssetName);
+
         }
 
         /// <summary>
@@ -45,6 +68,32 @@ namespace JOHN_WORKING_RUNNING
             // TODO: Add your update code here
 
             base.Update(gameTime);
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            spriteBatch.Begin();
+                spriteBatch.Draw(
+                terreno,
+                new Rectangle(Posicao.X, 350, terreno.Width, terreno.Height),
+                Color.White
+                );
+            spriteBatch.Draw(
+                terreno,
+                new Rectangle(Posicao.X + 900, 350, terreno.Width, terreno.Height),
+                Color.White
+                );
+
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
+       public void Mover(Direcoes argdirecao)
+        {
+            direcao = argdirecao;
+            switch (argdirecao)
+            {
+                case Direcoes.Esquerda: Posicao = new Point(Posicao.X - 2, Posicao.Y); break;
+                /*case Direcoes.Direita: Posicao = new Point(Posicao.X + 2, Posicao.Y); break;*/
+            }
         }
     }
 }
