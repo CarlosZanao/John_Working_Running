@@ -25,14 +25,18 @@ namespace JOHN_WORKING_RUNNING
         public Texture2D terreno;
         Direcoes direcao;
         public int somaPos;
+        public Rectangle BoundingBox { get; set; }
         public Point Posicao { get; set; }
+        Point spriteSize;
         //Texture2D Terreno1;
 
         public Terreno(Game game)
             : base(game)
         {
             // TODO: Construct any child components here
-            Posicao = new Point(0, 0);
+            spriteSize = new Point(838, 200);
+            Posicao = new Point(0, 350);
+            BoundingBox = new Rectangle(Posicao.X, Posicao.Y, spriteSize.X, spriteSize.Y);
         }
         public Terreno(Game game, Point argposicao)
            : base(game)
@@ -66,7 +70,11 @@ namespace JOHN_WORKING_RUNNING
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
-
+            if (Posicao.X <= -(terreno.Width))
+            {
+                Posicao = new Point(0, 351);
+            }
+            BoundingBox = new Rectangle(Posicao.X, Posicao.Y, spriteSize.X, spriteSize.Y);
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
@@ -74,12 +82,12 @@ namespace JOHN_WORKING_RUNNING
             spriteBatch.Begin();
                 spriteBatch.Draw(
                 terreno,
-                new Rectangle(Posicao.X, 350, terreno.Width, terreno.Height),
+                new Rectangle(Posicao.X, Posicao.Y, terreno.Width, terreno.Height),
                 Color.White
                 );
             spriteBatch.Draw(
                 terreno,
-                new Rectangle(Posicao.X + 900, 350, terreno.Width, terreno.Height),
+                new Rectangle(Posicao.X + 830, Posicao.Y, terreno.Width, terreno.Height),
                 Color.White
                 );
 

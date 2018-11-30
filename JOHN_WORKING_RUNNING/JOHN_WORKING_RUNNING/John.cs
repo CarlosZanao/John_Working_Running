@@ -22,14 +22,26 @@ namespace JOHN_WORKING_RUNNING
         SpriteBatch spriteBatch;
         Texture2D Jonh;
         Direcoes direcao;
+        public Point spriteFrame;
+        public Point spriteSize;
+        public Estados estado;
+        int spriteDelay;
+        DateTime spriteTime;
         public Point Posicao { get; set; }
+        public Rectangle BoundingBox { get; set; }
 
 
         public John(Game game)
             : base(game)
         {
             // TODO: Construct any child components here
-            Posicao = new Point(150, 50);
+            spriteFrame = new Point(0, 0);
+            Posicao = new Point(50, 349);
+            spriteSize = new Point(93, 110);
+            spriteDelay = 40;
+            spriteTime = DateTime.Now;
+            estado = Estados.Andando;
+            BoundingBox = new Rectangle(Posicao.X, Posicao.Y, spriteSize.X, spriteSize.Y);
         }
         public John(Game game, Point argposicao)
             : base(game)
@@ -54,27 +66,54 @@ namespace JOHN_WORKING_RUNNING
             
         }
 
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
+            
+            if (DateTime.Now > spriteTime + TimeSpan.FromMilliseconds(spriteDelay))
+            {
+                spriteFrame.X++;
+                if (estado == Estados.Andando)
+                {
+                    if (spriteFrame.X > 8) spriteFrame.X = 0;
+                    spriteFrame.Y = 0;
+                }
+                
+                spriteTime = DateTime.Now;
+            }
 
+            BoundingBox = new Rectangle(Posicao.X, Posicao.Y, spriteSize.X, spriteSize.Y);
             base.Update(gameTime);
-
         }
+       
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
-            spriteBatch.Draw(
+
+            /*spriteBatch.Draw(
             Jonh,
             new Rectangle(100, Posicao.Y, Jonh.Width, Jonh.Height),
             Color.White
             );
+            spriteBatch.End();*/
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(
+            Jonh,
+            new Rectangle(
+            Posicao.X, Posicao.Y,
+            spriteSize.X, spriteSize.Y),
+            new Rectangle(
+            spriteFrame.X * spriteSize.X, spriteFrame.Y * spriteSize.Y,
+            spriteSize.X, spriteSize.Y),
+            Color.White,
+            0f,
+            Vector2.Zero,
+            SpriteEffects.None,
+            0
+            );
             spriteBatch.End();
             base.Draw(gameTime);
+
         }
         public void Mover(Direcoes argdirecao)
         {

@@ -81,7 +81,8 @@ namespace JOHN_WORKING_RUNNING
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
@@ -92,11 +93,22 @@ namespace JOHN_WORKING_RUNNING
                 terreno1.Mover(Terreno.Direcoes.Esquerda);
 
             // TODO: Add your update logic here
-            if (terreno1.Posicao.X <= -(terreno1.terreno.Width + 62))
+            if (Jonh.BoundingBox.Intersects(terreno1.BoundingBox))
             {
-                terreno1.Posicao = new Point(0, 350);
+                Jonh.Posicao = new Point(Jonh.Posicao.X, 230);
+
+
             }
-           
+
+
+
+
+
+
+
+            Jonh.Update(gameTime);
+            terreno1.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -109,7 +121,8 @@ namespace JOHN_WORKING_RUNNING
             GraphicsDevice.Clear(Color.CornflowerBlue);
             Jonh.Draw(gameTime);
             terreno1.Draw(gameTime);
-            base.Draw(gameTime);
+            base.Draw(gameTime);
+
         }
     }
 }
