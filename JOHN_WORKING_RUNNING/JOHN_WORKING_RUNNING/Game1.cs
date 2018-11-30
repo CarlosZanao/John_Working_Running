@@ -16,13 +16,22 @@ namespace JOHN_WORKING_RUNNING
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        private const string AssetName = "JohnSprite";
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        John Jonh;
+        Terreno terreno1;
+        int x, y;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            Jonh = new John(this);
+            terreno1 = new Terreno(this);
             Content.RootDirectory = "Content";
+
+            
+            
         }
 
         /// <summary>
@@ -34,7 +43,8 @@ namespace JOHN_WORKING_RUNNING
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            Jonh.Initialize();
+            terreno1.Initialize();
             base.Initialize();
         }
 
@@ -47,6 +57,11 @@ namespace JOHN_WORKING_RUNNING
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            Jonh.LoadContent(this);
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            terreno1.LoadContent(this);
             // TODO: use this.Content to load your game content here
         }
 
@@ -66,11 +81,33 @@ namespace JOHN_WORKING_RUNNING
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            
+            
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                Jonh.Mover(John.Direcoes.Cima);
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                Jonh.Mover(John.Direcoes.Baixo);
+           /* if (Keyboard.GetState().IsKeyDown(Keys.Left))*/
+                terreno1.Mover(Terreno.Direcoes.Esquerda);
 
             // TODO: Add your update logic here
+            if (Jonh.BoundingBox.Intersects(terreno1.BoundingBox))
+            {
+                Jonh.Posicao = new Point(Jonh.Posicao.X, 230);
+
+
+            }
+
+
+
+
+
+
+
+            Jonh.Update(gameTime);
+            terreno1.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -82,10 +119,10 @@ namespace JOHN_WORKING_RUNNING
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
+            Jonh.Draw(gameTime);
+            terreno1.Draw(gameTime);
             base.Draw(gameTime);
+
         }
     }
 }
